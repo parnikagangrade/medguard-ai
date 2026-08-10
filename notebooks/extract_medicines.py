@@ -21,3 +21,9 @@ for line in lines:
 print("\n=== DETECTED MEDICINE LINES ===")
 for m in medicine_lines:
     print(m)
+    print("\n=== EXTRACTED MEDICINE NAMES ===")
+for line in medicine_lines:
+    # Remove the leading number and TAB/CAP/TAS marker
+    cleaned = re.sub(r'^\d+\)?\s*', '', line)  # remove leading number like "1)"
+    cleaned = re.sub(r'(TAB|CAP|TAS)[.,]?\s*', '', cleaned, flags=re.IGNORECASE)  # remove TAB/CAP marker
+    print(cleaned)
