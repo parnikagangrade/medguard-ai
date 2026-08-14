@@ -36,8 +36,7 @@ def fetch_and_store(drug_name):
             print(f"No data found for {drug_name}")
     else:
         print(f"Error fetching {drug_name}: {response.status_code}")
-
-common_drugs = ["Tylenol", "Advil", "Amoxicillin", "Aspirin"]
+common_drugs = ["Tylenol", "Advil", "Amoxicillin", "Aspirin", "Ibuprofen", "Acetaminophen", "Metformin", "Azithromycin", "Omeprazole", "Cetirizine"]
 
 for drug in common_drugs:
     fetch_and_store(drug)
