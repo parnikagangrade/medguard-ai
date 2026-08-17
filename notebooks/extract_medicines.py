@@ -33,29 +33,43 @@ def run_ocr(image_path):
     return text
 
 # ============================================================
-# STEP 3: Detect medicine lines (SYP/TAB/CAP/SUSP)
+# STEP 3 & 4: Detect form keyword using FUZZY matching (not exact regex)
 # ============================================================
+KNOWN_FORMS = ["SYP", "TAB", "CAP", "SUSP"]
+
+def detect_form_in_line(line, threshold=60):
+    """
+    Fuzzy-matches the first word of a line against known form keywords,
+    since OCR often mangles these short words unpredictably (e.g. SYP -> oyPp).
+    """
+    words = line.strip().split()
+    if not words:
+        return None, None
+
+    first_word = words[0].strip('.,;:()|')
+    match = process.extractOne(first_word.upper(), KNOWN_FORMS, scorer=fuzz.ratio)
+
+    if match and match[1] >= threshold:
+        form = match[0]
+        end_index = line.find(words[0]) + len(words[0])
+        return form, end_index
+    return None, None
+
 def detect_medicine_lines(raw_text):
     lines = raw_text.split("\n")
     medicine_lines = []
     for line in lines:
-        if re.search(r'\b(SYP|TAB|CAP|SUSP)\b', line, re.IGNORECASE):
+        form, _ = detect_form_in_line(line)
+        if form:
             medicine_lines.append(line.strip())
     return medicine_lines
 
-# ============================================================
-# STEP 4: Extract medicine name + form (CLEAN name only, no dosage attached)
-# ============================================================
 def extract_medicine_info(line):
-    form_match = re.search(r'\b(SYP|TAB|CAP|SUSP)\b', line, re.IGNORECASE)
-    form = form_match.group(1).upper() if form_match else None
+    form, end_index = detect_form_in_line(line)
+    remainder = line[end_index:].strip() if end_index else line
 
-    remainder = line[form_match.end():].strip() if form_match else line
-
-    # Only grab LETTERS and hyphens for the name — stop at first digit, parenthesis, or symbol
     name_match = re.match(r'([A-Za-z\-]+)', remainder)
     name = name_match.group(1).upper().strip('-') if name_match else remainder
-
     dosage = remainder[len(name_match.group(1)):].strip() if name_match else ""
 
     return {"form": form, "name": name, "dosage": dosage}
@@ -86,9 +100,6 @@ def match_medicine(ocr_name, form, all_names, confidence_threshold=65):
         if filtered:
             candidates = filtered
 
-    # FIX: lowercase both sides before comparing — token_set_ratio is case-sensitive,
-    # and OCR names are always uppercase while the database has mixed-case names.
-    # Without this, correct matches were scoring as low as 7-9% instead of near 100%.
     ocr_name_lower = ocr_name.lower()
     candidates_lower = [c.lower() for c in candidates]
     lower_to_original = {c.lower(): c for c in candidates}
@@ -96,8 +107,6 @@ def match_medicine(ocr_name, form, all_names, confidence_threshold=65):
     print(f"[DEBUG] Matching cleaned name: '{ocr_name}' | candidates count: {len(candidates)}")
 
     results = process.extract(ocr_name_lower, candidates_lower, scorer=fuzz.token_set_ratio, limit=5)
-
-    # Map matched lowercase strings back to their original-case database names
     results_original_case = [(lower_to_original[match], score, idx) for match, score, idx in results]
 
     best_match, best_score, _ = results_original_case[0]
