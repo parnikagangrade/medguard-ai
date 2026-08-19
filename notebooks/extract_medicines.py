@@ -33,15 +33,11 @@ def run_ocr(image_path):
     return text
 
 # ============================================================
-# STEP 3 & 4: Detect form keyword using FUZZY matching (not exact regex)
+# STEP 3 & 4: Detect form keyword using FUZZY matching
 # ============================================================
 KNOWN_FORMS = ["SYP", "TAB", "CAP", "SUSP"]
 
-def detect_form_in_line(line, threshold=60):
-    """
-    Fuzzy-matches the first word of a line against known form keywords,
-    since OCR often mangles these short words unpredictably (e.g. SYP -> oyPp).
-    """
+def detect_form_in_line(line, threshold=50):
     words = line.strip().split()
     if not words:
         return None, None
@@ -84,6 +80,35 @@ FORM_MAP = {
     "CAP": ["capsule"]
 }
 
+def get_composition(medicine_name, db_path="../data/indian_medicines.db"):
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT short_composition1, short_composition2 FROM medicines WHERE name = ?",
+        (medicine_name,)
+    )
+    row = cursor.fetchone()
+    conn.close()
+    if row:
+        return [c.strip() for c in row if c and c.strip()]
+    return []
+
+def check_duplicate_ingredients(matched_medicines):
+    ingredient_map = {}
+    risks = []
+    for med_name in matched_medicines:
+        compositions = get_composition(med_name)
+        for comp in compositions:
+            base_ingredient = comp.split('(')[0].strip().lower()
+            if base_ingredient in ingredient_map:
+                risks.append({
+                    "ingredient": base_ingredient,
+                    "medicines": [ingredient_map[base_ingredient], med_name]
+                })
+            else:
+                ingredient_map[base_ingredient] = med_name
+    return risks
+
 def get_database_names(db_path="../data/indian_medicines.db"):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
@@ -103,8 +128,6 @@ def match_medicine(ocr_name, form, all_names, confidence_threshold=65):
     ocr_name_lower = ocr_name.lower()
     candidates_lower = [c.lower() for c in candidates]
     lower_to_original = {c.lower(): c for c in candidates}
-
-    print(f"[DEBUG] Matching cleaned name: '{ocr_name}' | candidates count: {len(candidates)}")
 
     results = process.extract(ocr_name_lower, candidates_lower, scorer=fuzz.token_set_ratio, limit=5)
     results_original_case = [(lower_to_original[match], score, idx) for match, score, idx in results]
@@ -147,6 +170,17 @@ def run_pipeline(image_path):
             print("   Manual verification required.")
 
         results.append({**info, **match_result})
+
+    # Run risk check on all confidently matched medicines
+    confirmed_medicines = [r["match"] for r in results if r["verified"]]
+
+    print("\n=== RISK CHECK ===")
+    risks = check_duplicate_ingredients(confirmed_medicines)
+    if risks:
+        for r in risks:
+            print(f"⚠️ RISK: '{r['ingredient']}' appears in both {r['medicines'][0]} AND {r['medicines'][1]}")
+    else:
+        print("✅ No duplicate ingredient risks found among matched medicines.")
 
     return results
 
