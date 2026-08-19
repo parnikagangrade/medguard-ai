@@ -2,6 +2,7 @@ import cv2
 import pytesseract
 import re
 import sqlite3
+import os
 from rapidfuzz import process, fuzz
 
 # ============================================================
@@ -33,7 +34,7 @@ def run_ocr(image_path):
     return text
 
 # ============================================================
-# STEP 3 & 4: Detect form keyword using FUZZY matching
+# STEP 3 & 4: Detect form keyword using FUZZY matching + extract name
 # ============================================================
 KNOWN_FORMS = ["SYP", "TAB", "CAP", "SUSP"]
 
@@ -71,7 +72,7 @@ def extract_medicine_info(line):
     return {"form": form, "name": name, "dosage": dosage}
 
 # ============================================================
-# STEP 5: Fuzzy match against the Indian medicine database
+# STEP 5: Database + Fuzzy Matching
 # ============================================================
 FORM_MAP = {
     "SYP": ["syrup", "suspension", "oral suspension"],
@@ -80,7 +81,10 @@ FORM_MAP = {
     "CAP": ["capsule"]
 }
 
-def get_composition(medicine_name, db_path="../data/indian_medicines.db"):
+# Absolute path — works no matter which folder you run the program from
+DB_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "indian_medicines.db")
+
+def get_composition(medicine_name, db_path=DB_PATH):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute(
@@ -109,7 +113,7 @@ def check_duplicate_ingredients(matched_medicines):
                 ingredient_map[base_ingredient] = med_name
     return risks
 
-def get_database_names(db_path="../data/indian_medicines.db"):
+def get_database_names(db_path=DB_PATH):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute("SELECT name FROM medicines")
@@ -171,7 +175,6 @@ def run_pipeline(image_path):
 
         results.append({**info, **match_result})
 
-    # Run risk check on all confidently matched medicines
     confirmed_medicines = [r["match"] for r in results if r["verified"]]
 
     print("\n=== RISK CHECK ===")
