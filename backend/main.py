@@ -210,6 +210,143 @@ def search_medicine(q: str):
 @app.post("/ask-ai")
 def ask_ai(data: dict):
 
+    question = data.get("question", "").strip()
+
+    if not question:
+        return {
+            "success": False,
+            "answer": "Please enter a question."
+        }
+
+    try:
+        db_path = os.path.join(
+            os.path.dirname(__file__),
+            "..",
+            "data",
+            "indian_medicines.db"
+        )
+
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+
+        # Search the complete question first
+        search_terms = [question.lower()]
+
+        # Also search individual meaningful words
+        words = question.lower().split()
+
+        for word in words:
+            clean_word = word.strip(".,?!:;()[]{}")
+
+            if len(clean_word) >= 4:
+                search_terms.append(clean_word)
+
+        database_results = []
+
+        for term in search_terms:
+
+            cursor.execute(
+                """
+                SELECT
+                    name,
+                    short_composition1,
+                    short_composition2
+                FROM medicines
+                WHERE LOWER(name) LIKE ?
+                   OR LOWER(short_composition1) LIKE ?
+                   OR LOWER(short_composition2) LIKE ?
+                LIMIT 10
+                """,
+                (
+                    f"%{term}%",
+                    f"%{term}%",
+                    f"%{term}%"
+                )
+            )
+
+            rows = cursor.fetchall()
+
+            for row in rows:
+
+                result = {
+                    "name": row[0],
+                    "composition1": row[1],
+                    "composition2": row[2]
+                }
+
+                if result not in database_results:
+                    database_results.append(result)
+
+        conn.close()
+
+        # Create medicine context
+        if database_results:
+
+            medicine_context = "\n".join(
+                [
+                    f"""
+Medicine: {r['name']}
+Composition 1: {r['composition1'] or 'N/A'}
+Composition 2: {r['composition2'] or 'N/A'}
+"""
+                    for r in database_results[:10]
+                ]
+            )
+
+        else:
+
+            medicine_context = """
+No matching medicine was found in the MedGuard
+medicine database.
+"""
+
+        prompt = f"""
+You are MedGuard AI, a medicine information assistant.
+
+User question:
+{question}
+
+Information retrieved from the MedGuard medicine database:
+
+{medicine_context}
+
+Instructions:
+
+- Answer the user's question clearly and simply.
+- Use the database information when it is available.
+- Do not invent medicine composition or facts.
+- If relevant medicine information was found in the database,
+  explain it using that information.
+- If no relevant medicine was found, clearly say that it was
+  not found in the MedGuard database.
+- Do not diagnose medical conditions.
+- Do not prescribe medicines.
+- Do not recommend changing or stopping medication.
+- For personal medical decisions, recommend consulting
+  a doctor or pharmacist.
+"""
+
+        response = gemini_client.models.generate_content(
+            model="gemini-3.6-flash",
+            contents=prompt
+        )
+
+        return {
+            "success": True,
+            "answer": response.text,
+            "database_matches": database_results[:10]
+        }
+
+    except Exception as e:
+
+        print("Gemini/database error:", e)
+
+        return {
+            "success": False,
+            "answer": "Sorry, I couldn't process your request right now."
+        }
+def ask_ai(data: dict):
+
     question = data.get(
         "question",
         ""
