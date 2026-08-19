@@ -4,6 +4,8 @@ import re
 import sqlite3
 import os
 from rapidfuzz import process, fuzz
+from google import genai
+from dotenv import load_dotenv
 
 # ============================================================
 # STEP 1: Image Preprocessing
@@ -26,12 +28,35 @@ def preprocess_image(image_path):
     return thresh
 
 # ============================================================
-# STEP 2: OCR
+# STEP 2: OCR (Tesseract - fast, free, tried first)
 # ============================================================
 def run_ocr(image_path):
     processed_img = preprocess_image(image_path)
     text = pytesseract.image_to_string(processed_img, config='--psm 6')
     return text
+
+# ============================================================
+# STEP 2b: OCR fallback using Gemini vision (smarter, used when Tesseract struggles)
+# ============================================================
+def run_ocr_with_gemini(image_path):
+    """
+    Uses Gemini's vision capability to read prescription text directly.
+    Generally more accurate than Tesseract on handwritten/tilted images.
+    """
+    load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
+    client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+
+    with open(image_path, "rb") as f:
+        image_bytes = f.read()
+
+    response = client.models.generate_content(
+        model="gemini-3.6-flash",
+        contents=[
+            {"inline_data": {"mime_type": "image/png", "data": image_bytes}},
+            "Extract all medicine names, dosages, and instructions from this prescription image exactly as written. Output only the medicine lines, one per line, in the format: FORM NAME DOSAGE INSTRUCTIONS"
+        ]
+    )
+    return response.text
 
 # ============================================================
 # STEP 3 & 4: Detect form keyword using FUZZY matching + extract name
@@ -81,7 +106,6 @@ FORM_MAP = {
     "CAP": ["capsule"]
 }
 
-# Absolute path — works no matter which folder you run the program from
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "indian_medicines.db")
 
 def get_composition(medicine_name, db_path=DB_PATH):
@@ -144,7 +168,7 @@ def match_medicine(ocr_name, form, all_names, confidence_threshold=65):
         return {"match": None, "confidence": best_score, "candidates": results_original_case, "verified": False}
 
 # ============================================================
-# MAIN PIPELINE
+# MAIN PIPELINE (for standalone terminal testing)
 # ============================================================
 def run_pipeline(image_path):
     print("=== Running OCR ===")

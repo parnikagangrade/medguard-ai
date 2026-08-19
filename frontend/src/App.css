@@ -1,0 +1,1349 @@
+/* =========================================================
+   MEDGUARD — COMPLETE APP.CSS
+========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+
+  background: #070b12;
+  color: #f8fafc;
+
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.medguard-app {
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at 50% -10%,
+      rgba(37, 99, 235, 0.15),
+      transparent 40%
+    ),
+    #070b12;
+}
+
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.navbar {
+  height: 76px;
+
+  padding: 0 7%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid #182131;
+
+  background: rgba(7, 11, 18, 0.88);
+
+  backdrop-filter: blur(14px);
+
+  position: sticky;
+  top: 0;
+
+  z-index: 100;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  font-size: 1.4rem;
+  font-weight: 700;
+
+  color: #f8fafc;
+}
+
+.brand-icon {
+  font-size: 1.8rem;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+
+  gap: 30px;
+}
+
+.nav-links a {
+  color: #94a3b8;
+
+  text-decoration: none;
+
+  font-size: 0.9rem;
+
+  transition: 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+  min-height: 650px;
+
+  padding: 100px 25px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.hero-badge {
+  color: #60a5fa;
+
+  font-size: 0.75rem;
+
+  font-weight: 700;
+
+  letter-spacing: 2px;
+}
+
+.hero h1 {
+  margin: 22px 0;
+
+  color: #f8fafc;
+
+  font-size: clamp(3.5rem, 8vw, 6.5rem);
+
+  line-height: 0.95;
+
+  letter-spacing: -5px;
+}
+
+.hero h1 span {
+  color: #60a5fa;
+}
+
+.hero-description {
+  max-width: 680px;
+
+  color: #94a3b8;
+
+  font-size: 1.15rem;
+
+  line-height: 1.7;
+}
+
+.hero-buttons {
+  display: flex;
+
+  gap: 14px;
+
+  margin-top: 32px;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.primary-button,
+.secondary-button,
+.card-button {
+  border: none;
+
+  border-radius: 12px;
+
+  padding: 14px 22px;
+
+  font-size: 0.95rem;
+
+  font-weight: 600;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+
+  cursor: pointer;
+}
+
+.primary-button {
+  background: #2563eb;
+
+  color: white;
+
+  box-shadow:
+    0 10px 30px rgba(37, 99, 235, 0.25);
+}
+
+.primary-button:hover {
+  background: #1d4ed8;
+
+  transform: translateY(-2px);
+}
+
+.primary-button:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+.secondary-button {
+  background: #111827;
+
+  color: #cbd5e1;
+
+  border: 1px solid #263244;
+}
+
+.secondary-button:hover {
+  color: white;
+
+  border-color: #3b82f6;
+}
+
+.card-button {
+  padding: 9px 0;
+
+  background: transparent;
+
+  color: #60a5fa;
+}
+
+
+/* =========================================================
+   GENERAL SECTIONS
+========================================================= */
+
+.features-section {
+  width: 100%;
+
+  max-width: 1100px;
+
+  margin: 0 auto;
+
+  padding: 100px 25px;
+
+  text-align: center;
+}
+
+.section-label {
+  color: #60a5fa;
+
+  font-size: 0.75rem;
+
+  font-weight: 700;
+
+  letter-spacing: 2px;
+}
+
+.features-section > h2,
+.assistant-section > h2 {
+  margin: 15px 0 50px;
+
+  color: #f8fafc;
+
+  font-size: clamp(2.5rem, 5vw, 4rem);
+
+  line-height: 1;
+
+  letter-spacing: -2px;
+}
+
+
+/* =========================================================
+   FEATURE CARDS
+========================================================= */
+
+.feature-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 18px;
+
+  text-align: left;
+}
+
+.feature-card {
+  min-height: 280px;
+
+  padding: 30px;
+
+  border-radius: 20px;
+
+  background: #0c121d;
+
+  border: 1px solid #1b2636;
+
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+
+  border-color: #334155;
+}
+
+.feature-icon {
+  width: 50px;
+  height: 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 25px;
+
+  border-radius: 14px;
+
+  background: rgba(37, 99, 235, 0.12);
+
+  font-size: 1.5rem;
+}
+
+.feature-card h3 {
+  color: #f8fafc;
+
+  font-size: 1.2rem;
+}
+
+.feature-card p {
+  color: #64748b;
+
+  font-size: 0.9rem;
+
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   PRESCRIPTION UPLOAD
+========================================================= */
+
+.prescription-card {
+  width: 100%;
+
+  max-width: 850px;
+
+  margin: 0 auto 50px;
+
+  padding: 45px;
+
+  text-align: center;
+
+  background: #0c121d;
+
+  border: 1px solid #1b2636;
+
+  border-radius: 24px;
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.upload-icon {
+  margin-bottom: 10px;
+
+  font-size: 3.5rem;
+}
+
+.prescription-card h3 {
+  margin: 10px 0;
+
+  color: #f8fafc;
+
+  font-size: 1.6rem;
+}
+
+.prescription-card p {
+  max-width: 650px;
+
+  margin: 10px auto 28px;
+
+  color: #94a3b8;
+
+  line-height: 1.7;
+}
+
+.selected-file {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-wrap: wrap;
+
+  gap: 20px;
+
+  margin-top: 25px;
+
+  padding: 15px 20px;
+
+  border-radius: 14px;
+
+  background: #111827;
+
+  border: 1px solid #263244;
+
+  color: #cbd5e1;
+}
+
+.selected-file .primary-button {
+  margin-top: 0;
+}
+
+.upload-status {
+  margin-top: 20px !important;
+
+  color: #60a5fa !important;
+
+  font-size: 0.95rem;
+}
+
+
+/* =========================================================
+   PRESCRIPTION RESULTS
+========================================================= */
+
+.prescription-results {
+  width: 100%;
+
+  max-width: 1000px;
+
+  margin: 50px auto 30px;
+
+  padding: 35px;
+
+  text-align: left;
+
+  background: #0c121d;
+
+  border: 1px solid #1b2636;
+
+  border-radius: 24px;
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.prescription-results > .section-label {
+  margin-bottom: 8px;
+}
+
+.prescription-results > h3 {
+  margin: 5px 0 25px;
+
+  color: #f8fafc;
+
+  font-size: 1.8rem;
+}
+
+
+/* =========================================================
+   INDIVIDUAL MEDICINE CARD
+========================================================= */
+
+.medicine-result {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns: 60px minmax(0, 1fr) 300px;
+
+  align-items: center;
+
+  gap: 20px;
+
+  padding: 22px;
+
+  margin-bottom: 15px;
+
+  border-radius: 16px;
+
+  background: #111827;
+
+  border: 1px solid #243044;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.medicine-result:last-child {
+  margin-bottom: 0;
+}
+
+.medicine-result:hover {
+  border-color: #3b82f6;
+
+  transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   MEDICINE ICON
+========================================================= */
+
+.medicine-result-icon {
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 14px;
+
+  background: rgba(37, 99, 235, 0.12);
+
+  font-size: 1.5rem;
+}
+
+
+/* =========================================================
+   MEDICINE INFORMATION
+========================================================= */
+
+.medicine-result-info {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+.medicine-result-info strong {
+  display: block;
+
+  color: #f8fafc;
+
+  font-size: 1.15rem;
+
+  font-weight: 700;
+
+  line-height: 1.4;
+}
+
+.medicine-result-info span {
+  display: block;
+
+  color: #94a3b8;
+
+  font-size: 0.9rem;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   MATCH INFORMATION
+========================================================= */
+
+.medicine-match {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  gap: 6px;
+
+  padding-left: 20px;
+
+  border-left: 1px solid #263244;
+}
+
+.medicine-match strong {
+  color: #e2e8f0;
+
+  font-size: 0.95rem;
+
+  line-height: 1.45;
+}
+
+.medicine-match small {
+  color: #64748b;
+
+  font-size: 0.8rem;
+}
+
+
+/* =========================================================
+   MATCH STATUS
+========================================================= */
+
+.match-success {
+  display: inline-flex;
+
+  align-items: center;
+
+  width: fit-content;
+
+  padding: 5px 10px;
+
+  border-radius: 20px;
+
+  background: rgba(34, 197, 94, 0.1);
+
+  color: #4ade80;
+
+  font-size: 0.75rem;
+
+  font-weight: 700;
+}
+
+.match-warning {
+  display: inline-flex;
+
+  align-items: center;
+
+  width: fit-content;
+
+  padding: 5px 10px;
+
+  border-radius: 20px;
+
+  background: rgba(245, 158, 11, 0.1);
+
+  color: #fbbf24;
+
+  font-size: 0.75rem;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   SAFETY CHECK
+========================================================= */
+
+.safety-box {
+  width: 100%;
+
+  max-width: 1000px;
+
+  margin: 25px auto 80px;
+
+  padding: 28px 32px;
+
+  text-align: left;
+
+  border-radius: 20px;
+
+  background: #0c121d;
+
+  border: 1px solid #1b2636;
+}
+
+.safety-box h3 {
+  margin: 0 0 15px;
+
+  color: #f8fafc;
+
+  font-size: 1.4rem;
+}
+
+.safety-box p {
+  margin: 0;
+
+  color: #4ade80;
+
+  font-size: 1rem;
+
+  line-height: 1.6;
+}
+
+.risk-item {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 12px;
+
+  padding: 16px;
+
+  margin-top: 10px;
+
+  border-radius: 12px;
+
+  background: rgba(239, 68, 68, 0.08);
+
+  border: 1px solid rgba(239, 68, 68, 0.2);
+
+  color: #fca5a5;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   AI ASSISTANT SECTION
+========================================================= */
+
+.assistant-section {
+  min-height: 600px;
+
+  padding: 120px 25px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(37, 99, 235, 0.1),
+      transparent 50%
+    );
+}
+
+.assistant-icon {
+  margin-bottom: 20px;
+
+  font-size: 4rem;
+}
+
+.assistant-section > p {
+  max-width: 600px;
+
+  margin: 0 0 30px;
+
+  color: #94a3b8;
+
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer {
+  padding: 50px 20px;
+
+  text-align: center;
+
+  border-top: 1px solid #182131;
+
+  color: #64748b;
+}
+
+.footer-brand {
+  margin-bottom: 10px;
+
+  color: #f8fafc;
+
+  font-size: 1.2rem;
+
+  font-weight: 700;
+}
+
+footer p {
+  margin: 0;
+}
+
+footer small {
+  display: block;
+
+  margin-top: 15px;
+
+  color: #475569;
+}
+
+
+/* =========================================================
+   AI OVERLAY
+========================================================= */
+
+.ai-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 9999;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(0, 0, 0, 0.72);
+
+  backdrop-filter: blur(10px);
+}
+
+
+/* =========================================================
+   AI CHAT WINDOW
+========================================================= */
+
+.ai-chat-window {
+  width: min(760px, 95vw);
+
+  height: min(700px, 90vh);
+
+  display: flex;
+
+  flex-direction: column;
+
+  overflow: hidden;
+
+  border-radius: 24px;
+
+  background: #080e18;
+
+  border: 1px solid #263244;
+
+  box-shadow:
+    0 30px 100px rgba(0, 0, 0, 0.65);
+}
+
+
+/* =========================================================
+   AI HEADER
+========================================================= */
+
+.ai-header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 20px 24px;
+
+  background: #0d1522;
+
+  border-bottom: 1px solid #1e293b;
+}
+
+.ai-header-left {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+}
+
+.ai-avatar {
+  width: 44px;
+  height: 44px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(37, 99, 235, 0.15);
+
+  font-size: 1.4rem;
+}
+
+.ai-header h3 {
+  margin: 0;
+
+  color: white;
+}
+
+.ai-header span {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #4ade80;
+
+  font-size: 0.7rem;
+}
+
+.close-button {
+  width: 38px;
+  height: 38px;
+
+  border-radius: 10px;
+
+  border: 1px solid #334155;
+
+  background: #111827;
+
+  color: #94a3b8;
+
+  cursor: pointer;
+
+  font-size: 1rem;
+}
+
+.close-button:hover {
+  color: white;
+
+  border-color: #64748b;
+}
+
+
+/* =========================================================
+   AI CHAT BODY
+========================================================= */
+
+.ai-chat-body {
+  flex: 1;
+
+  overflow-y: auto;
+
+  padding: 25px;
+}
+
+
+/* =========================================================
+   AI WELCOME
+========================================================= */
+
+.ai-welcome {
+  padding: 50px 20px;
+
+  text-align: center;
+}
+
+.welcome-icon {
+  margin-bottom: 15px;
+
+  font-size: 3.5rem;
+}
+
+.ai-welcome h3 {
+  margin: 0;
+
+  color: white;
+
+  font-size: 1.3rem;
+}
+
+.ai-welcome p {
+  max-width: 500px;
+
+  margin: 10px auto 25px;
+
+  color: #64748b;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   AI SUGGESTIONS
+========================================================= */
+
+.suggestions {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+}
+
+.suggestions button {
+  padding: 10px 14px;
+
+  border-radius: 10px;
+
+  border: 1px solid #263244;
+
+  background: #111827;
+
+  color: #94a3b8;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.suggestions button:hover {
+  color: #bfdbfe;
+
+  border-color: #3b82f6;
+}
+
+
+/* =========================================================
+   CHAT MESSAGES
+========================================================= */
+
+.chat-row {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 10px;
+
+  margin-bottom: 18px;
+}
+
+.user-row {
+  flex-direction: row-reverse;
+}
+
+.message-avatar {
+  width: 32px;
+  height: 32px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #172033;
+
+  font-size: 0.8rem;
+}
+
+.message-bubble {
+  max-width: 75%;
+
+  padding: 13px 16px;
+
+  border-radius: 15px;
+
+  font-size: 0.9rem;
+
+  line-height: 1.6;
+
+  white-space: pre-wrap;
+}
+
+.ai-row .message-bubble {
+  background: #111827;
+
+  border: 1px solid #1e293b;
+
+  color: #cbd5e1;
+
+  border-top-left-radius: 4px;
+}
+
+.user-row .message-bubble {
+  background: #2563eb;
+
+  color: white;
+
+  border-top-right-radius: 4px;
+}
+
+.typing {
+  color: #64748b !important;
+}
+
+
+/* =========================================================
+   AI INPUT
+========================================================= */
+
+.ai-input-area {
+  display: flex;
+
+  gap: 10px;
+
+  padding: 16px;
+
+  background: #0d1522;
+
+  border-top: 1px solid #1e293b;
+}
+
+.ai-input-area input {
+  flex: 1;
+
+  min-width: 0;
+
+  padding: 14px 16px;
+
+  border-radius: 12px;
+
+  border: 1px solid #334155;
+
+  outline: none;
+
+  background: #020617;
+
+  color: white;
+
+  font-size: 0.95rem;
+}
+
+.ai-input-area input::placeholder {
+  color: #64748b;
+}
+
+.ai-input-area input:focus {
+  border-color: #3b82f6;
+}
+
+.send-button {
+  width: 52px;
+
+  flex-shrink: 0;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background: #2563eb;
+
+  color: white;
+
+  font-size: 1.2rem;
+
+  cursor: pointer;
+}
+
+.send-button:hover {
+  background: #1d4ed8;
+}
+
+.send-button:disabled {
+  opacity: 0.4;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   AI DISCLAIMER
+========================================================= */
+
+.ai-disclaimer {
+  padding: 10px 20px 15px;
+
+  text-align: center;
+
+  color: #475569;
+
+  font-size: 0.68rem;
+
+  background: #0d1522;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .medicine-result {
+    grid-template-columns: 55px minmax(0, 1fr);
+  }
+
+  .medicine-match {
+    grid-column: 1 / -1;
+
+    padding-left: 0;
+
+    padding-top: 15px;
+
+    border-left: none;
+
+    border-top: 1px solid #263244;
+  }
+
+}
+
+
+@media (max-width: 700px) {
+
+  .navbar {
+    padding: 0 20px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .hero {
+    min-height: 550px;
+
+    padding: 70px 20px;
+  }
+
+  .hero h1 {
+    font-size: 3.5rem;
+
+    letter-spacing: -3px;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+  }
+
+  .hero-buttons {
+    width: 100%;
+
+    flex-direction: column;
+
+    max-width: 350px;
+  }
+
+  .hero-buttons button {
+    width: 100%;
+  }
+
+  .features-section {
+    padding: 70px 18px;
+  }
+
+  .features-section > h2,
+  .assistant-section > h2 {
+    font-size: 2.5rem;
+
+    letter-spacing: -1.5px;
+  }
+
+  .prescription-card {
+    padding: 35px 20px;
+  }
+
+  .prescription-results {
+    padding: 20px;
+
+    border-radius: 18px;
+  }
+
+  .medicine-result {
+    grid-template-columns: 50px minmax(0, 1fr);
+
+    padding: 18px;
+  }
+
+  .medicine-result-info strong {
+    font-size: 1rem;
+  }
+
+  .medicine-result-info span {
+    font-size: 0.82rem;
+  }
+
+  .safety-box {
+    padding: 22px;
+  }
+
+  .ai-chat-window {
+    width: 100%;
+
+    height: 92vh;
+
+    border-radius: 18px;
+  }
+
+  .message-bubble {
+    max-width: 85%;
+  }
+
+  .suggestions {
+    flex-direction: column;
+  }
+
+  .suggestions button {
+    width: 100%;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL SCREENS
+========================================================= */
+
+@media (max-width: 450px) {
+
+  .brand {
+    font-size: 1.2rem;
+  }
+
+  .hero h1 {
+    font-size: 3rem;
+  }
+
+  .medicine-result {
+    grid-template-columns: 1fr;
+  }
+
+  .medicine-result-icon {
+    width: 45px;
+    height: 45px;
+  }
+
+  .medicine-match {
+    grid-column: auto;
+  }
+
+  .selected-file {
+    flex-direction: column;
+  }
+
+  .selected-file .primary-button {
+    width: 100%;
+  }
+
+}
