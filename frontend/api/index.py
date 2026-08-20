@@ -74,7 +74,7 @@ app.add_middleware(
 # HOME
 # ============================================================
 
-@app.get("/api")
+@app.get("/")
 def root():
     return {
         "message": "MedGuard API is running"
@@ -186,7 +186,7 @@ def check_duplicate_ingredients(
 # MEDICINE SEARCH
 # ============================================================
 
-@app.get("/api/search-medicine")
+@app.get("/search-medicine")
 def search_medicine(q: str):
 
     conn = sqlite3.connect(DB_PATH)
@@ -232,7 +232,7 @@ def search_medicine(q: str):
 # AI ASSISTANT
 # ============================================================
 
-@app.post("/api/ask-ai")
+@app.post("/ask-ai")
 def ask_ai(data: dict):
 
     question = data.get(
@@ -408,7 +408,7 @@ Instructions:
 # PRESCRIPTION ANALYSIS
 # ============================================================
 
-@app.post("/api/analyze-prescription")
+@app.post("/analyze-prescription")
 async def analyze_prescription(
     file: UploadFile = File(...)
 ):
