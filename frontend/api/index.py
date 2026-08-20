@@ -21,9 +21,7 @@ from rapidfuzz import process, fuzz
 
 BASE_DIR = os.path.dirname(
     os.path.dirname(
-        os.path.dirname(
-            os.path.abspath(__file__)
-        )
+        os.path.abspath(__file__)
     )
 )
 
