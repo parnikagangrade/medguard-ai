@@ -45,7 +45,7 @@ function App() {
 
     try {
       const response = await fetch(
-  "https://medguard-ai-backend.onrender.com/analyze-prescription",
+  "https://medguard-ai-backend.onrender.com/ask-ai",
   {
     method: "POST",
     headers: {
