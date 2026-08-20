@@ -1,5 +1,9 @@
+cd ~/medguard-ai
+
+cat > frontend/vercel.json <<'EOF'
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite"
 }
+EOF
